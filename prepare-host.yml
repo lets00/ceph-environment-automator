@@ -1,0 +1,12 @@
+- hosts: local
+  user: root
+  gather_facts: no
+  pre_tasks:
+    - name: "Install python 2 when not installed"
+      raw: "test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)"
+      changed_when: false
+
+    - name: "Gather facts"
+      setup: 
+  roles:
+    - role: ansible-vms

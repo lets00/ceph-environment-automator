@@ -1,0 +1,9 @@
+---
+
+- name: Install packages
+  yum: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - qemu-kvm
+    - iproute2

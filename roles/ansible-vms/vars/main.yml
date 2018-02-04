@@ -1,0 +1,4 @@
+---
+
+vm_cloud_image: https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
+dest_images_dir: "/home/eduardo/Projects/ceph-environment-automator/raw_vms/"

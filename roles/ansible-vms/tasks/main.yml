@@ -1,0 +1,13 @@
+---
+
+- name: Gather OS specific install file
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}.yml"
+
+- name: Download image
+  get_url:
+    url: "{{ vm_cloud_image }}"
+    dest: "{{ dest_images_dir }}"
+    force: no
+

@@ -1,0 +1,4 @@
+raw_imgs/*
+roles/meta/*
+roles/test
+packer-vms/qemu-kvm/ceph-mon.json
