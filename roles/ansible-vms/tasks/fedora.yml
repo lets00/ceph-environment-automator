@@ -1,11 +1,11 @@
 ---
 
 - name: Install packages
-  yum: 
+  dnf:
     name: "{{ item }}"
     state: present
   with_items:
     - qemu-kvm
-    - iproute2
+    - iproute
     - python-libvirt
-    
+    - virt-install
