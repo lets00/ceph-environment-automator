@@ -5,9 +5,24 @@
   with_first_found:
     - "{{ ansible_distribution | lower }}.yml"
 
-- name: Download image
+- name: Download OS image
   get_url:
     url: "{{ vm_cloud_image }}"
     dest: "{{ dest_images_dir }}"
     force: no
 
+# TODO: Replace sheel command to qemu-img module
+# Create 6 Disks (4 OSDs and 2 Journals)
+- name: Create VM disks that will be used as OSD
+  shell: "qemu-img create -f qcow2 {{ dest_images_dir }}/{{ item }} {{ osd_size }} "
+  with_items:
+    - ceph-osd0-0
+    - ceph-osd0-1
+    - ceph-osd1-0
+    - ceph-osd1-1
+
+- name: Create VM disks that will be used as Journal
+  shell: "qemu-img create -f qcow2 {{ dest_images_dir }}/{{ item }} {{ journal_size }} "
+  with_items:
+    - ceph-osd0-journal
+    - ceph-osd1-journal

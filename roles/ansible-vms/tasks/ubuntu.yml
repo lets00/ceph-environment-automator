@@ -7,3 +7,5 @@
   with_items:
     - qemu-kvm
     - iproute2
+    - python-libvirt
+    
