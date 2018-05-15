@@ -30,10 +30,10 @@
 #
 # - name: Create VMs...
 #   shell: echo 0
-#
+
 - name: Create XML VMs templates
   template:
     src: templates/test_xml.j2
-    dest: xml_templates/{{ item['key'] }}.txt
+    dest: "{{ dest_xml_dir }}/{{ item['key'] }}.txt"
   with_dict:
     - "{{ vms }}"
