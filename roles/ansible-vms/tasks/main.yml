@@ -11,18 +11,29 @@
     dest: "{{ dest_images_dir }}"
     force: no
 
-# TODO: Replace sheel command to qemu-img module
+# TODO: Replace shell command to qemu-img module
 # Create 6 Disks (4 OSDs and 2 Journals)
 - name: Create VM disks that will be used as OSD
-  shell: "qemu-img create -f qcow2 {{ dest_images_dir }}/{{ item }} {{ osd_size }} "
-  with_items:
-    - ceph-osd0-0
-    - ceph-osd0-1
-    - ceph-osd1-0
-    - ceph-osd1-1
+  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }} "
+  with_subelements:
+    - "{{ vms }}"
+    - osds
 
 - name: Create VM disks that will be used as Journal
-  shell: "qemu-img create -f qcow2 {{ dest_images_dir }}/{{ item }} {{ journal_size }} "
-  with_items:
-    - ceph-osd0-journal
-    - ceph-osd1-journal
+  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }} "
+  with_subelements:
+    - "{{ vms }}"
+    - journal
+
+# - name: Create cloud-config file
+#   shell: echo 0
+#
+# - name: Create VMs...
+#   shell: echo 0
+#
+- name: Create XML VMs templates
+  template:
+    src: templates/test_xml.j2
+    dest: xml_templates/{{ item['key'] }}.txt
+  with_dict:
+    - "{{ vms }}"
