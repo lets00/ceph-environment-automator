@@ -10,6 +10,13 @@ public_network: lxcbr0
 cluster_network: ceph0
 
 vms:
+  ceph-mon:
+    memory: 4096
+    vcpus: 2
+    os: "{{ dest_images_dir }}/ubuntu.img"
+    networks:
+      - lxcbr0
+      - ceph0
   ceph-osd0:
     memory: 4096
     vcpus: 2

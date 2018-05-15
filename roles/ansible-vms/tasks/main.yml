@@ -18,12 +18,14 @@
   with_subelements:
     - "{{ vms }}"
     - osds
+    - { skip_missing: True }
 
 - name: Create VM disks that will be used as Journal
   shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }} "
   with_subelements:
     - "{{ vms }}"
     - journal
+    - { skip_missing: True }
 
 # - name: Create cloud-config file
 #   shell: echo 0
