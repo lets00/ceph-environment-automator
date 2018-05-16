@@ -26,7 +26,7 @@ vms:
         size: 10G
       - src: "{{ dest_images_dir }}/ceph-osd0-1"
         size: 10G
-    journal:
+    journals:
       - src: "{{ dest_images_dir }}/ceph-osd0-journal"
         size: 1G
     networks:
@@ -39,10 +39,10 @@ vms:
     osds:
       - src: "{{ dest_images_dir }}/ceph-osd1-0"
         size: 10G
-      - src: "{{ dest_images_dir }}/ceph-osd-1-1"
+      - src: "{{ dest_images_dir }}/ceph-osd1-1"
         size: 10G
-    journal:
-      - src: "{{ dest_images_dir }}/ceph-osd0-journal"
+    journals:
+      - src: "{{ dest_images_dir }}/ceph-osd1-journal"
         size: 1G
     networks:
       - lxcbr0

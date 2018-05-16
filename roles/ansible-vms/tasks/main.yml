@@ -11,6 +11,13 @@
     dest: "{{ dest_images_dir }}"
     force: no
 
+- name: Create VM OS images
+  copy:
+    src: "{{ dest_images_dir }}/ubuntu.img"
+    dest: "{{ dest_images_dir }}/{{ item['key'] }}.img"
+  with_dict:
+    - "{{ vms }}"
+
 # TODO: Replace shell command to qemu-img module
 # Create 6 Disks (4 OSDs and 2 Journals)
 - name: Create VM disks that will be used as OSD
@@ -24,18 +31,18 @@
   shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }} "
   with_subelements:
     - "{{ vms }}"
-    - journal
+    - journals
     - { skip_missing: True }
 
-# - name: Create cloud-config file
-#   shell: echo 0
-#
-# - name: Create VMs...
-#   shell: echo 0
-
-- name: Create XML VMs templates
+- name: Prepare scripts
   template:
-    src: templates/test_xml.j2
-    dest: "{{ dest_xml_dir }}/{{ item['key'] }}.txt"
+    src: templates/shell_sh.j2
+    dest: {{ dest_images_dir }}/{{ item['key'] }}.sh
+    mode: u+rwx
+  with_dict:
+    - "{{ vms }}"
+
+- name: Execute scripts using virt-install
+  shell: "/bin/bash {{ dest_images_dir }}/{{ item['key'] }}.sh"
   with_dict:
     - "{{ vms }}"
