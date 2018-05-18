@@ -9,3 +9,4 @@
     - iproute
     - python-libvirt
     - virt-install
+    - cloud-utils

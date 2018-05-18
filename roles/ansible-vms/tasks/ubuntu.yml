@@ -1,11 +1,11 @@
 ---
 
 - name: Install packages
-  apt: 
+  apt:
     name: "{{ item }}"
     state: present
   with_items:
     - qemu-kvm
     - iproute2
     - python-libvirt
-    
+    - cloud-utils

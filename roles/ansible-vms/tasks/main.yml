@@ -8,27 +8,39 @@
 - name: Download OS image
   get_url:
     url: "{{ vm_cloud_image }}"
-    dest: "{{ dest_images_dir }}"
+    dest: "{{ dest_images_dir }}/{{ vm_image_name }}.img"
     force: no
 
 - name: Create VM OS images
   copy:
-    src: "{{ dest_images_dir }}/ubuntu.img"
+    src: "{{ dest_images_dir }}/{{ vm_image_name }}.img"
     dest: "{{ dest_images_dir }}/{{ item['key'] }}.img"
   with_dict:
     - "{{ vms }}"
 
+- name: Prepare cloud-config VM templates
+  template:
+    src: templates/cloud-config.j2
+    dest: "{{ vm_templates }}/{{ item['key']}}"
+  with_dict:
+    - "{{ vms }}"
+
+- name: Create img to appy cloud-config into VM
+  shell: "cloud-localds {{ vm_templates }}/{{ item['key'] }}.cdrom {{ vm_templates }}/{{ item['key'] }}"
+  with_dict:
+    - "{{ vms }}"
+
 # TODO: Replace shell command to qemu-img module
-# Create 6 Disks (4 OSDs and 2 Journals)
 - name: Create VM disks that will be used as OSD
-  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }} "
+  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }}G"
   with_subelements:
     - "{{ vms }}"
     - osds
     - { skip_missing: True }
 
+# TODO: Replace shell command to qemu-img module
 - name: Create VM disks that will be used as Journal
-  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }} "
+  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }}G"
   with_subelements:
     - "{{ vms }}"
     - journals
@@ -37,7 +49,7 @@
 - name: Prepare scripts
   template:
     src: templates/shell_sh.j2
-    dest: {{ dest_images_dir }}/{{ item['key'] }}.sh
+    dest: "{{ dest_images_dir }}/{{ item['key'] }}.sh"
     mode: u+rwx
   with_dict:
     - "{{ vms }}"

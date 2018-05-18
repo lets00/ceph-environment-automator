@@ -5,15 +5,16 @@ virt-install \
 --connect qemu:///system \
 --name {{ item['key'] }} \
 --ram {{ item['value']['memory'] }} \
---import --disk path={{ dest_images_dir }}/{{ item['key'] }}.img,bus=scsi \
+--import --disk path={{ dest_images_dir }}/{{ item['key'] }}.img,bus=ide,size=10 \
+--disk path={{ vm_templates }}/{{ item['key'] }}.cdrom,device=cdrom \
 {% if item['value']['osds'] is defined %}
 {%   for osd in item['value']['osds'] %}
---disk path={{ osd['src'] }},bus=scsi \
+--disk path={{ osd['src'] }},bus=scsi,size={{ osd['size'] }} \
 {%   endfor %}
 {% endif %}
 {% if item['value']['journals'] is defined %}
 {%   for journal in item['value']['journals'] %}
---disk path={{ journal['src'] }},bus=scsi \
+--disk path={{ journal['src'] }},bus=scsi,size={{ journal['size'] }} \
 {%   endfor %}
 {% endif %}
 --vcpus {{ item['value']['vcpus'] }} \

@@ -1,43 +1,44 @@
 ---
 
-vm_cloud_image: https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
+vm_cloud_image: "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img"
+vm_image_name: "ubuntu-16.04"
+vm_user_password: "str0ng_p@ssw0rd"
+vm_templates: "/home/eduardo/Projects/ceph-environment-automator/raw_imgs"
 dest_images_dir: "/home/eduardo/Projects/ceph-environment-automator/raw_imgs"
 
 vms:
   ceph-mon:
     memory: 4096
     vcpus: 2
-    os: "{{ dest_images_dir }}/ubuntu.img"
     networks:
       - lxcbr0
       - ceph0
   ceph-osd0:
     memory: 4096
     vcpus: 2
-    os: "{{ dest_images_dir }}/ubuntu.img"
     osds:
       - src: "{{ dest_images_dir }}/ceph-osd0-0"
-        size: 10G
+       # In GB
+        size: 10
       - src: "{{ dest_images_dir }}/ceph-osd0-1"
-        size: 10G
+        size: 10
     journals:
       - src: "{{ dest_images_dir }}/ceph-osd0-journal"
-        size: 1G
+        size: 1
     networks:
       - lxcbr0
       - ceph0
   ceph-osd1:
     memory: 1024
     vcpus: 2
-    os: "{{ dest_images_dir }}/ubuntu.img"
     osds:
       - src: "{{ dest_images_dir }}/ceph-osd1-0"
-        size: 10G
+        size: 10
       - src: "{{ dest_images_dir }}/ceph-osd1-1"
-        size: 10G
+        size: 10
     journals:
       - src: "{{ dest_images_dir }}/ceph-osd1-journal"
-        size: 1G
+        size: 1
     networks:
       - lxcbr0
       - ceph0
