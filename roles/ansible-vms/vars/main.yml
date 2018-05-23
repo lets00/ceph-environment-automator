@@ -29,7 +29,7 @@ vms:
       - lxcbr0
       - ceph0
   ceph-osd1:
-    memory: 1024
+    memory: 4096
     vcpus: 2
     osds:
       - src: "{{ dest_images_dir }}/ceph-osd1-0"
