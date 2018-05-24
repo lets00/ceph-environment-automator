@@ -13,9 +13,23 @@ $ virt-manager
 ```
 
 # Requirements
+
 - Ansible;
 - **lxcbr0** bridge interface in machines that will running VMs;
 - **ceph0** bridge interface in machines that will running VMs;
+
+## How to create bridge interfaces
+
+First, install **bridge-utils** package using the Package Manager available on your system.
+After that, you can create bridge using **brctl** command. The command below shows how to create and up bridge interfaces:
+
+```shell
+# brctl addbr ceph0
+# brctl addbr lxcbr0
+# ip link set up dev ceph0
+# ip link set up dev lxcbr0
+```
+
 
 # Executing this playbook
 ## Using Packer
