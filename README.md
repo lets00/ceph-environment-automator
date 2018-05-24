@@ -2,7 +2,7 @@
 
 This project aims to create a full ceph environment in a KVM-based Virtual Machines (VMs). It creates VMs that are used to build the ceph environment.
 
-![Image](https://asciinema.org/a/182339.png)
+[![asciicast](https://asciinema.org/a/182339.png)](https://asciinema.org/a/182339)
 
 
 # What will I have when executing this?
