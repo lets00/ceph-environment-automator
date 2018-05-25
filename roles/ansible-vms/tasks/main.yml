@@ -25,26 +25,50 @@
   with_dict:
     - "{{ vms }}"
 
-- name: Create img to appy cloud-config into VM
-  shell: "cloud-localds {{ vm_templates }}/{{ item['key'] }}.cdrom {{ vm_templates }}/{{ item['key'] }}"
+- name: Verify if cdrom img exists
+  stat:
+    path: "{{ vm_templates }}/{{ item['key'] }}.cdrom"
+  register: cdrom
   with_dict:
     - "{{ vms }}"
 
-# TODO: Replace shell command to qemu-img module
-- name: Create VM disks that will be used as OSD
-  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }}G"
+- name: Create img to appy cloud-config into VM
+  shell: "cloud-localds {{ item['stat']['path'] }} {{ item['stat']['path'].split('.')[0] }}"
+  when: item['stat']['exists'] == false
+  with_items:
+    - "{{ cdrom['results'] }}"
+
+- name: Verify if OSDs exists
+  stat:
+    path: "{{ item[1]['src'] }}"
+  register: osds
   with_subelements:
     - "{{ vms }}"
     - osds
     - { skip_missing: True }
 
 # TODO: Replace shell command to qemu-img module
-- name: Create VM disks that will be used as Journal
-  shell: "qemu-img create -f qcow2 {{ item[1]['src'] }} {{ item[1]['size'] }}G"
+- name: Create VM disks that will be used as OSD
+  shell: "qemu-img create -f qcow2 {{ item['item'][1]['src'] }} {{ item['item'][1]['size'] }}G"
+  when: item['stat']['exists'] == false
+  with_items:
+    - "{{ osds['results'] }}"
+
+- name: Verify if Journals exists
+  stat:
+    path: "{{ item[1]['src'] }}"
+  register: journals
   with_subelements:
     - "{{ vms }}"
     - journals
     - { skip_missing: True }
+
+# TODO: Replace shell command to qemu-img module
+- name: Create VM disks that will be used as Journal
+  shell: "qemu-img create -f qcow2 {{ item['item'][1]['src'] }} {{ item['item'][1]['size'] }}G"
+  when: item['stat']['exists'] == false
+  with_items:
+    - "{{ journals['results'] }}"
 
 - name: Prepare scripts
   template:

@@ -86,12 +86,6 @@ Enter the user's password (the user needs to have sudo permissions) and wait the
 
 TO DO
 
-# Notes
-
-## OSDs and Journals
-
-This playbooks does not implement idempotence to create OSDs and Journals images (because it uses the shell module). Every time you run this playbook it will **OVERRIDE** the OSDs and Journals images. So, **BE CAREFUL!**
-
 ## Improvements
 
 When I wrote this role/playbook, I needed some modules that are not implemented on Ansible yet. To use the functions I needed, I used the shell module to execute some commands.
