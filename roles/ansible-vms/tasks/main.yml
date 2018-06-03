@@ -33,7 +33,7 @@
     - "{{ vms }}"
 
 - name: Create img to appy cloud-config into VM
-  shell: "cloud-localds {{ item['stat']['path'] }} {{ item['stat']['path'].split('.')[0] }}"
+  shell: "cloud-localds {{ item['invocation']['module_args']['path'] }} {{ item['invocation']['module_args']['path'].split('.')[0] }}"
   when: item['stat']['exists'] == false
   with_items:
     - "{{ cdrom['results'] }}"
