@@ -12,7 +12,6 @@ vms:
     vcpus: 2
     networks:
       - lxcbr0
-      - ceph0
   ceph-osd0:
     memory: 4096
     vcpus: 2
@@ -24,7 +23,7 @@ vms:
         size: 10
     journals:
       - src: "{{ dest_images_dir }}/ceph-osd0-journal"
-        size: 1
+        size: 10
     networks:
       - lxcbr0
       - ceph0
@@ -38,7 +37,7 @@ vms:
         size: 10
     journals:
       - src: "{{ dest_images_dir }}/ceph-osd1-journal"
-        size: 1
+        size: 10
     networks:
       - lxcbr0
       - ceph0
