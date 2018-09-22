@@ -9,12 +9,12 @@ virt-install \
 --disk path={{ vm_templates }}/{{ item['key'] }}.cdrom,device=cdrom \
 {% if item['value']['osds'] is defined %}
 {%   for osd in item['value']['osds'] %}
---disk path={{ osd['src'] }},bus=scsi,size={{ osd['size'] }} \
+--disk path={{ osd['src'] }},bus=sata,size={{ osd['size'] }} \
 {%   endfor %}
 {% endif %}
 {% if item['value']['journals'] is defined %}
 {%   for journal in item['value']['journals'] %}
---disk path={{ journal['src'] }},bus=scsi,size={{ journal['size'] }} \
+--disk path={{ journal['src'] }},bus=sata,size={{ journal['size'] }} \
 {%   endfor %}
 {% endif %}
 --vcpus {{ item['value']['vcpus'] }} \
