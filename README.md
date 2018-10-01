@@ -21,8 +21,8 @@ virt-manager
 
 # How to create the bridge interfaces
 
-First, install the **bridge-utils** package using the **Package Manager** available on your system.
-Second, Create the bridges using the `brctl` command. The list of commands below show how to create and bring up the bridge interfaces:
+First of all, install the **bridge-utils** package using the **Package Manager** available on your system.
+Second, Create the bridges using the `brctl` command. The list of commands below show how to create and bring up the bridge interfaces. Run the commands and answer then, if asked:
 
 ```bash
 brctl addbr ceph0
